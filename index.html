@@ -76,14 +76,20 @@
             border-radius: 24px;
             padding: 28px;
             display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 227, 170, 0.25);
         }
         .card h3 { margin: 0 0 10px 0; color: var(--text-bright); font-size: 1.3rem; }
         .card p { margin: 0 0 24px 0; font-size: 0.95rem; color: #737d8f; line-height: 1.6; }
 
-        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 50px; cursor: pointer; }
+        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 50px; cursor: pointer; transition: background-color 0.2s; }
         .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
+        .btn-primary:hover { background-color: #ffffff; }
 
-        /* UNBREAKABLE NATIVE AUDIO PLAYER CONTAINER */
+        /* NATIVE AUDIO PLAYER CONTAINER (WITH COLLAPSE SUPPORT) */
         .audio-player-bar {
             position: fixed; 
             bottom: 30px; 
@@ -100,6 +106,52 @@
             z-index: 9999; 
             box-sizing: border-box;
             text-align: center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Compact state when minimized */
+        .audio-player-bar.minimized {
+            padding: 8px 18px;
+            max-width: 220px;
+            border-radius: 50px;
+        }
+
+        .audio-player-bar.minimized audio,
+        .audio-player-bar.minimized .track-status {
+            display: none;
+        }
+
+        .audio-player-bar.minimized .track-name {
+            margin: 0;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-toggle-btn {
+            position: absolute;
+            top: -12px;
+            right: 15px;
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            line-height: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .player-toggle-btn:hover {
+            transform: scale(1.15);
         }
 
         .track-info { margin-bottom: 10px; }
@@ -116,48 +168,28 @@
 
     <!-- SOCIAL LINKS -->
     <div class="socials-sidebar">
-        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-        <a href="https://horizon.meta.com/profile/622800940922066?hwsh=1208710486115575410512181" class="social-link" target="_blank">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M16.5 6c-1.9 0-3.6 1.1-4.5 2.7C11.1 7.1 9.4 6 7.5 6 4.5 6 2 8.5 2 11.5S4.5 17 7.5 17c1.9 0 3.6-1.1 4.5-2.7 0.9 1.6 2.6 2.7 4.5 2.7 3 0 5.5-2.5 5.5-5.5S19.5 6 16.5 6zm-9 9c-1.9 0-3.5-1.6-3.5-3.5S5.6 8 7.5 8s3.5 1.6 3.5 3.5S9.4 15 7.5 15zm9 0c-1.9 0-3.5-1.6-3.5-3.5S14.6 8 16.5 8s3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
-        </a>
-        <a href="https://tiktok.com/@wbj4yce" class="social-link" target="_blank">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.58-4.06-1.47-.64-.5-1.16-1.13-1.53-1.85v7.27c-.01 1.87-.6 3.79-1.86 5.17-1.72 1.95-4.51 2.76-7.03 2.11-2.45-.58-4.54-2.48-5.27-4.9-.76-2.41-.22-5.19 1.4-7.06 1.41-1.67 3.63-2.61 5.82-2.48v4.28c-1.01-.15-2.09.16-2.81.91-.76.75-.98 1.89-.69 2.89.28 1.05 1.25 1.85 2.33 1.93 1.25.13 2.5-.59 2.94-1.74.15-.41.2-.85.2-1.29V.02z"/></svg>
-        </a>
-    </div>
+        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank" title="YouTube">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 Here is your updated HTML/CSS/JS file. 
 
-    <header>
-        <h1>⚡ WBJayce Hub ⚡</h1>
-        <p>One click away from getting banned🙃</p>
-    </header>
+It includes a **toggleable collapse/expand button** for the music player bar, allowing users to shrink it to a minimal badge or expand it back to full controls. It also includes an expanded grid showing **multiple MediaFire downloads**.
 
-    <main>
-        <h2 class="section-title">Meta Tag</h2>
-        <div class="grid">
-            <div class="card">
-                <div>
-                    <h3>Meta tag- Nitro Client (OP)</h3>
-                    <p>Download the latest Nitro Client menu for Meta Tag here.</p>
-                </div>
-                <a href="https://mediafire.com" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-        </div>
-    </main>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBJayce Hub</title>
+    <style>
+        :root {
+            --bg-color: #060709;
+            --card-bg: rgba(20, 23, 34, 0.6);
+            --accent-color: #ffe3aa; 
+            --accent-glow: rgba(255, 227, 170, 0.35);
+            --text-color: #abb2bf;
+            --text-bright: #ffffff;
+        }
 
-    <!-- Native Browser Audio Controller Widget -->
-    <div class="audio-player-bar">
-        <div class="track-info">
-            <p class="track-status">NOW PLAYING</p>
-            <p class="track-name">Eazy-E - No More Muthafuckas</p>
-        </div>
-        <audio src="song.mp3" controls loop></audio>
-    </div>
-
-</body>
-</html>
-
-
-
-
-
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: linear-gradient(

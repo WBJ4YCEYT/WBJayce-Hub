@@ -12,314 +12,150 @@
             --accent-glow: rgba(255, 227, 170, 0.35);
             --text-color: #abb2bf;
             --text-bright: #ffffff;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #060709 0%, #0d0f14 50%, #151821 100%);
-            color: var(--text-color);
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; padding-bottom: 180px;
-            overflow-x: hidden; user-select: none;
-        }
-
-        /* CLICK TO ENTER OVERLAY */
-        #enter-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            cursor: pointer;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-
-        #enter-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .enter-text {
-            color: var(--text-bright);
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--accent-glow);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.98); }
-        }
-
-        /* SOCIAL SIDEBAR STYLING */
+/* SOCIAL SIDEBAR STYLING */
         .socials-sidebar {
             position: fixed;
-            top: 30px;
-            right: 30px;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 15px;
-            z-index: 10000;
+            z-index: 100;
         }
 
         .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: var(--radius-full);
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.1);
+            color: var(--text-bright);
             display: flex;
-            align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.15);
-            border-radius: 50%;
-            color: var(--accent-color);
+            align-items: center;
             text-decoration: none;
-            font-size: 1.4rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .social-link:hover {
-            transform: scale(1.2); 
-            border-color: var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-glow);
-            color: #ffffff;
-        }
-
-        header { text-align: center; padding: 80px 20px 20px 20px; }
-        header h1 { color: var(--text-bright); font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 20px var(--accent-glow); }
-        header p { font-size: 1.1rem; color: #636d80; }
-
-        main { width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
-        .section-title { color: var(--text-bright); border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-top: 40px; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-top: 20px; }
-        @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.08);
-            border-radius: 24px;
-            padding: 28px;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .card h3 { margin: 0 0 10px 0; color: var(--text-bright); font-size: 1.3rem; }
-        .card p { margin: 0 0 24px 0; font-size: 0.95rem; color: #737d8f; line-height: 1.6; }
-
-        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 50px; cursor: pointer; }
-        .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
-
-        /* FOOTER DISCLAIMER */
-        footer {
-            margin-top: auto;
-            padding: 20px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #555d6b;
-            max-width: 600px;
-        }
-
-        /* RESIZABLE / MINIMIZABLE AUDIO PLAYER */
-        .audio-player-bar {
-            position: fixed; 
-            bottom: 30px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background-color: rgba(15, 18, 28, 0.95);
-            border: 1px solid var(--accent-color);
-            box-shadow: 0 8px 32px var(--accent-glow);
-            backdrop-filter: blur(20px);
-            border-radius: 25px; 
-            padding: 16px 22px;
-            z-index: 9999; 
-            box-sizing: border-box;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .player-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .track-info { margin-bottom: 0; }
-        .track-status { font-size: 0.7rem; letter-spacing: 1.5px; color: var(--accent-color); margin: 0; font-weight: 800; }
-        .track-name { color: var(--text-bright); font-size: 0.95rem; font-weight: 700; margin: 2px 0 0 0; }
-
-        .toggle-btn {
-            background: none;
-            border: 1px solid rgba(255, 227, 170, 0.3);
             color: var(--accent-color);
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: scale(1.1);
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .profile-card h1 {
+            color: var(--text-bright);
+            margin: 0 0 10px;
+            font-size: 2rem;
+        }
+
+        .profile-card p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* MUSIC PLAYER */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.2);
+            border-radius: var(--radius-full);
+            padding: 12px 24px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            transition: background 0.2s;
+            gap: 15px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            z-index: 1000;
         }
 
-        .toggle-btn:hover {
-            background: var(--accent-color);
-            color: #000;
-        }
-
-        .player-content {
-            margin-top: 12px;
-            max-height: 100px;
-            opacity: 1;
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
-        }
-
-        audio {
-            width: 100%;
-            accent-color: var(--accent-color);
-        }
-
-        /* MINIMIZED PLAYER STATE */
-        .audio-player-bar.minimized {
-            padding: 10px 20px;
-            max-width: 300px;
-        }
-
-        .audio-player-bar.minimized .player-content {
-            max-height: 0;
-            opacity: 0;
-            margin-top: 0;
-            pointer-events: none;
+        .play-btn {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <!-- CLICK TO ENTER OVERLAY -->
-    <div id="enter-overlay">
-        <div class="enter-text">[ click to enter ]</div>
+    <!-- OVERLAY -->
+    <div id="enter-overlay" onclick="enterSite()">
+        <div class="enter-text">Click to Enter</div>
     </div>
 
-    <!-- SOCIAL LINKS -->
+    <!-- SIDEBAR -->
     <div class="socials-sidebar">
-        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank" title="YouTube">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-        <a href="https://horizon.meta.com/profile/622800940922066?hwsh=1208710486115575410512181" class="social-link" target="_blank" title="Meta Horizon">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M16.5 6c-1.9 0-3.6 1.1-4.5 2.7C11.1 7.1 9.4 6 7.5 6 4.5 6 2 8.5 2 11.5S4.5 17 7.5 17c1.9 0 3.6-1.1 4.5-2.7 0.9 1.6 2.6 2.7 4.5 2.7 3 0 5.5-2.5 5.5-5.5S19.5 6 16.5 6zm-9 9c-1.9 0-3.5-1.6-3.5-3.5S5.6 8 7.5 8s3.5 1.6 3.5 3.5S9.4 15 7.5 15zm9 0c-1.9 0-3.5-1.6-3.5-3.5S14.6 8 16.5 8s3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
-        </a>
-        <a href="https://tiktok.com/@wbj4yce" class="social-link" target="_blank" title="TikTok">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.58-4.06-1.47-.64-.5-1.16-1.13-1.53-1.85v7.27c-.01 1.87-.6 3.79-1.86 5.17-1.72 1.95-4.51 2.76-7.03 2.11-2.45-.58-4.54-2.48-5.27-4.9-.76-2.41-.22-5.19 1.4-7.06 1.41-1.67 3.63-2.61 5.82-2.48v4.28c-1.01-.15-2.09.16-2.81.91-.76.75-.98 1.89-.69 2.89.28 1.05 1.25 1.85 2.33 1.93 1.25.13 2.5-.59 2.94-1.74.15-.41.2-.85.2-1.29V.02z"/></svg>
-        </a>
-        <!-- GOFILE SOCIAL LINK -->
-        <a href="https://gofile.io/d/keCQJbmK" class="social-link" target="_blank" title="GoFile Folder">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10zM13 9h-2v3H8v2h3v3h2v-3h3v-2h-3V9z"/></svg>
-        </a>
+        <a href="#" class="social-link"><i class="fa-brands fa-discord"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
     </div>
 
-    <header>
-        <h1>⚡ WBJayce Hub ⚡</h1>
-        <p>One click away from getting banned🙃</p>
-    </header>
-
-    <main>
-        <h2 class="section-title">Meta Tag Downloads</h2>
-        <div class="grid">
-            <!-- DOWNLOAD CARD 1 -->
-            <div class="card">
-                <div>
-                    <h3>Nitro Client (OP)</h3>
-                    <p>Download the latest Nitro Client menu for Meta Tag here.</p>
-                </div>
-                <a href="https://mediafire.com/file_link_1" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-
-            <!-- DOWNLOAD CARD 2 -->
-            <div class="card">
-                <div>
-                    <h3>Joker Client (Mid)</h3>
-                    <p>This Modded Apk of Meta Tag, is Joker client, and Zarth modding hub put together</p>
-                </div>
-                <a href="https://www.mediafire.com/file/mojovalymlipshg/MetaTag_ZarthModdingHub_1.1.43.apk/file" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-
-            <!-- DOWNLOAD CARD 3 -->
-            <div class="card">
-                <div>
-                    <h3>MMA Client (cheeks)</h3>
-                    <p>Not fully built😔</p>
-                </div>
-                <a href="https://www.mediafire.com/file/1cjed0zr7dnap43/MetaTag-MMA-8-10-26+(2)+(1).apk/file" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-
-            <!-- DOWNLOAD CARD 4 -->
-            <div class="card">
-                <div>
-                    <h3>SPM Client (BOOTY BUTT😭)</h3>
-                    <p>The worst, This SUCKS</p>
-                </div>
-                <a href="https://www.mediafire.com/file/m3ydunfnortatoi/MetaTag-SPM-8-21-26+(1).apk/file" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-
-            <!-- DOWNLOAD CARD 5 -->
-            <div class="card">
-                <div>
-                    <h3>Flow Client (Mid)</h3>
-                    <p>A lot of mods, some don't work,and confusing</p>
-                </div>
-                <a href="https://www.mediafire.com/file/j425743qrp5f38r/MetaTag-7-6-26+modded.by.junior.apk/file" class="btn btn-primary" target="_blank">Download</a>
-            </div>
+    <!-- MAIN HUB -->
+    <div class="container">
+        <div class="profile-card">
+            <h1>WBJayce</h1>
+            <p>Welcome to the official hub.</p>
         </div>
-    </main>
+    </div>
 
-    <footer>
-        <p>⚠️DISCLAIMER⚠️, This site is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Meta Platforms, Inc. or Meta Tag.</p>
-    </footer>
+    <!-- AUDIO -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-    <!-- Native Browser Audio Controller Widget -->
-    <div class="audio-player-bar" id="audioPlayerBar">
-        <div class="player-header">
-            <div class="track-info">
-                <p class="track-status">NOW PLAYING</p>
-                <p class="track-name">Eazy-E - No More Muthafuckas</p>
-            </div>
-            <button class="toggle-btn" id="togglePlayer" aria-label="Toggle Player">—</button>
-        </div>
-        <div class="player-content">
-            <audio id="audioElement" src="song.mp3" controls loop></audio>
-        </div>
+    <div class="music-player">
+        <button class="play-btn" onclick="toggleAudio()"><i id="music-icon" class="fa-solid fa-pause"></i></button>
+        <span style="font-size: 0.85rem; color: var(--text-bright);">Background Audio</span>
     </div>
 
     <script>
-        const playerBar = document.getElementById('audioPlayerBar');
-        const toggleBtn = document.getElementById('togglePlayer');
-        const overlay = document.getElementById('enter-overlay');
-        const audio = document.getElementById('audioElement');
+        const audio = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
 
-        overlay.addEventListener('click', () => {
-            overlay.classList.add('hidden');
+        function enterSite() {
+            document.getElementById('enter-overlay').classList.add('hidden');
             audio.play().catch(() => {});
-        });
+        }
 
-        toggleBtn.addEventListener('click', () => {
-            playerBar.classList.toggle('minimized');
-            if (playerBar.classList.contains('minimized')) {
-                toggleBtn.textContent = '▲';
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                icon.className = 'fa-solid fa-pause';
             } else {
-                toggleBtn.textContent = '—';
+                audio.pause();
+                icon.className = 'fa-solid fa-play';
             }
-        });
+        }
     </script>
 </body>
 </html>

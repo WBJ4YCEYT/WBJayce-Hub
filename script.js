@@ -9,25 +9,36 @@ const playerStatus = document.getElementById('playerStatus');
 const volumeSlider = document.getElementById('volumeSlider');
 const resizeHandle = document.getElementById('resizeHandle');
 
-// --- 🎧 AUDIO MANAGEMENT ---
+// --- 🎧 AUDIO ENGINE LOGIC ---
 function playAudioEngine() {
     if (audio.paused) {
         audio.play().then(() => {
             playIcon.style.display = 'none';
             pauseIcon.style.display = 'block';
             playerStatus.innerText = 'PLAYING';
-        }).catch(() => {});
+        }).catch((err) => {
+            console.log("Audio failed to auto-start:", err);
+        });
     }
 }
-document.body.addEventListener('click', playAudioEngine, { once: true });
 
+// Fixed: Only trigger autoplay on background page clicks, NOT when clicking player controls
+document.addEventListener('click', (e) => {
+    if (e.target.closest('#dragPlayer')) return;
+    playAudioEngine();
+}, { once: true });
+
+// Fixed toggle action loop
 playBtn.addEventListener('click', (e) => {
     e.stopPropagation();
+    e.preventDefault();
+    
     if (audio.paused) {
-        audio.play();
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-        playerStatus.innerText = 'PLAYING';
+        audio.play().then(() => {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+            playerStatus.innerText = 'PLAYING';
+        }).catch(err => console.log(err));
     } else {
         audio.pause();
         playIcon.style.display = 'block';
@@ -53,7 +64,7 @@ volumeSlider.addEventListener('input', (e) => {
     audio.volume = e.target.value;
 });
 
-// --- 🖐️ DRAG & RESIZE ENGINE (Supports Mouse & Touch/VR Triggers) ---
+// --- 🖐️ DRAG & RESIZE ENGINE ---
 let isDragging = false, isResizing = false;
 let startX, startY, startWidth, startHeight, startLeft, startTop;
 
@@ -93,7 +104,7 @@ function onMove(e) {
     }
     if (isResizing) {
         dragPlayer.style.width = Math.max(280, startWidth + (clientX - startX)) + 'px';
-        dragPlayer.style.height = Math.max(80, startHeight + (clientY - startY)) + 'px';
+        dragPlayer.style.height = Math.max(120, startHeight + (clientY - startY)) + 'px';
     }
 }
 
@@ -109,7 +120,7 @@ resizeHandle.addEventListener('touchstart', onStartResize, { passive: false });
 document.addEventListener('touchmove', onMove, { passive: false });
 document.addEventListener('touchend', onEnd);
 
-// --- ✨ DYNAMIC FALLING STARS TRAIL ---
+// --- ✨ STARS ENGINE ---
 function createStarTrail(clientX, clientY) {
     if (Math.random() > 0.15) return;
     const star = document.createElement('div');
@@ -123,7 +134,8 @@ function createStarTrail(clientX, clientY) {
 
 document.addEventListener('mousemove', (e) => createStarTrail(e.clientX, e.clientY));
 document.addEventListener('touchmove', (e) => {
-    if(e.touches && e.touches[0]) {
+    if (e.touches && e.touches[0]) {
         createStarTrail(e.touches[0].clientX, e.touches[0].clientY);
     }
 });
+

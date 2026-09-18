@@ -1,5 +1,3 @@
-player engine, and commit changes:
-
 ```javascript
 const audio = document.getElementById('bgMusic');
 const dragPlayer = document.getElementById('dragPlayer');
@@ -14,12 +12,10 @@ const resizeHandle = document.getElementById('resizeHandle');
 const trackLabel = document.getElementById('trackLabel');
 const nextBtn = document.getElementById('nextBtn');
 
-// 📋 SEQUENCE PLAYLIST (Your Exact Sum Rap Tracks)
-// Note: When you upload these song audio files, make sure they match these names exactly!
 const playlist = [
-    { name: "Eazy-E - No More ?'s", url: "song.mp3" },
-    { name: "Roddy Ricch - The Box", url: "thebox.mp3" },
-    { name: "Lil Tjay - F.N", url: "fn.mp3" }
+    { name: "Eazy-E - No More ?'s 🎧", url: "song.mp3" },
+    { name: "Roddy Ricch - The Box 🎧", url: "thebox.mp3" },
+    { name: "Lil Tjay - F.N 🎧", url: "fn.mp3" }
 ];
 
 let currentTrackIndex = 0;
@@ -33,7 +29,6 @@ function loadTrack(index) {
 
 function nextTrack() {
     currentTrackIndex++;
-    // Loops back to track 1 if playlist runs out
     if (currentTrackIndex >= playlist.length) {
         currentTrackIndex = 0;
     }
@@ -45,19 +40,15 @@ function nextTrack() {
     }).catch(() => {});
 }
 
-// Initial initialization
 loadTrack(currentTrackIndex);
 
-// Manual Skip Button
 nextBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     nextTrack();
 });
 
-// Automatic Sequencer Playback Controller
 audio.addEventListener('ended', nextTrack);
 
-// --- 🎧 AUDIO NAVIGATION HANDLERS ---
 function playAudioEngine() {
     if (audio.paused && audio.currentTime === 0) {
         audio.play().then(() => {
@@ -102,7 +93,6 @@ volumeSlider.addEventListener('input', (e) => {
     audio.volume = e.target.value;
 });
 
-// --- 🖐️ DRAG & RESIZE PANEL HANDLING ---
 let isDragging = false, isResizing = false;
 let startX, startY, startWidth, startHeight, startLeft, startTop;
 
@@ -139,7 +129,6 @@ document.addEventListener('mousemove', (e) => {
 
 document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
 
-// --- ✨ STARS ENGINE TRAIL ---
 document.addEventListener('mousemove', (e) => {
     if (Math.random() > 0.15) return;
     const star = document.createElement('div');
@@ -150,4 +139,6 @@ document.addEventListener('mousemove', (e) => {
     document.body.appendChild(star);
     setTimeout(() => star.remove(), 1000);
 });
+
+
 

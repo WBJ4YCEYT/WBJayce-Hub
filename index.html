@@ -8,8 +8,8 @@
         :root {
             --bg-color: #0d0e12;
             --card-bg: #141722;
-            --accent-color: #ff6600; /* Bright Neon Orange */
-            --accent-glow: rgba(255, 102, 0, 0.45);
+            --accent-color: #ffe3aa; /* Orange Theme color #ffe3aa */
+            --accent-glow: rgba(255, 227, 170, 0.45);
             --text-color: #abb2bf;
             --text-bright: #ffffff;
         }
@@ -23,7 +23,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-bottom: 120px; /* Space so player bar doesn't block content */
+            padding-bottom: 120px; 
+            overflow-x: hidden;
+            user-select: none;
         }
 
         header {
@@ -75,6 +77,7 @@
             }
         }
 
+        /* 🌟 SMOOTH EXPANDING CARDS 🌟 */
         .card {
             background-color: var(--card-bg);
             border: 1px solid #282e3d;
@@ -83,13 +86,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+            transform-origin: center center;
         }
 
         .card:hover {
-            transform: translateY(-2px);
+            transform: scale(1.05); 
             border-color: var(--accent-color);
-            box-shadow: 0 5px 20px var(--accent-glow);
+            box-shadow: 0 10px 30px var(--accent-glow);
         }
 
         .card h3 {
@@ -124,16 +128,15 @@
         }
 
         .btn-primary:hover {
-            background-color: #ff8533;
+            background-color: #fff2d4;
             box-shadow: 0 6px 18px var(--accent-glow);
         }
 
-        /* 🎵 GUNS.LOL STYLE FLOATING MUSIC PLAYER BAR 🎵 */
+        /* 🎵 DRAGGABLE GUNS.LOL PLAYER BAR WIDGET 🎵 */
         .audio-player-bar {
             position: fixed;
             bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: calc(50% - 225px); /* Center it by default horizontally */
             width: calc(100% - 40px);
             max-width: 450px;
             background-color: rgba(20, 23, 34, 0.85);
@@ -148,6 +151,8 @@
             justify-content: space-between;
             z-index: 9999;
             box-sizing: border-box;
+            cursor: move; /* Indicates it can be moved around */
+            touch-action: none; /* Stops normal phone/VR screen scrolling while moving */
         }
 
         .player-info {
@@ -156,6 +161,7 @@
             flex-grow: 1;
             margin-right: 15px;
             overflow: hidden;
+            pointer-events: none; /* Helps drag detection ignore inner text elements */
         }
 
         .track-status {
@@ -183,7 +189,7 @@
             background: #282e3d;
             border-radius: 2px;
             position: relative;
-            cursor: pointer;
+            pointer-events: auto; /* Keeps progress timeline clickable */
         }
 
         .progress-bar {
@@ -191,7 +197,6 @@
             background: var(--accent-color);
             width: 0%;
             border-radius: 2px;
-            transition: width 0.1s linear;
         }
 
         .controls-btn {
@@ -207,10 +212,11 @@
             box-shadow: 0 0 10px var(--accent-glow);
             flex-shrink: 0;
             transition: transform 0.1s, background-color 0.2s;
+            pointer-events: auto; /* Keeps control button interactive */
         }
 
         .controls-btn:hover {
-            background-color: #ff8533;
+            background-color: #fff2d4;
         }
 
         .controls-btn:active {
@@ -221,6 +227,28 @@
             fill: #000000;
             width: 16px;
             height: 16px;
+        }
+
+        /* ✨ STAR TRAIL STYLING ✨ */
+        .star-particle {
+            position: fixed;
+            pointer-events: none;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            z-index: 10000;
+            animation: fallFade 1s forwards linear;
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        @keyframes fallFade {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50px) rotate(180deg) scale(0.3);
+                opacity: 0;
+            }
         }
 
         footer {
@@ -260,8 +288,8 @@
     <!-- 🎵 BACKGROUND AUDIO COMPONENT 🎵 -->
     <audio id="bgMusic" src="song.mp3" loop></audio>
 
-    <!-- 🎵 FLOATING GUNS.LOL PLAYER BAR WIDGET 🎵 -->
-    <div class="audio-player-bar">
+    <!-- 🎵 DRAGGABLE FLOATING PLAYER BAR WIDGET 🎵 -->
+    <div class="audio-player-bar" id="dragPlayer">
         <div class="player-info">
             <p class="track-status" id="playerStatus">PAUSED</p>
             <p class="track-name" id="trackLabel">Eazy-E - No More Muthafuckas 🎧</p>
@@ -270,9 +298,7 @@
             </div>
         </div>
         <button class="controls-btn" id="playBtn">
-            <!-- Play Button SVG -->
             <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <!-- Pause Button SVG -->
             <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
         </button>
     </div>
@@ -281,7 +307,7 @@
         <p>Disclaimer: Use mods at your own risk. We are not affiliated with Meta or any game developers.</p>
     </footer>
 
-    <!-- 🕹️ LOGIC HANDLERS FOR MEDIA PLAYBACK -->
+    <!-- 🕹️ ENGINE CONTROLLERS & PARTICLE ENGINE -->
     <script>
         const audio = document.getElementById('bgMusic');
         const playBtn = document.getElementById('playBtn');
@@ -290,39 +316,13 @@
         const progressBar = document.getElementById('progressBar');
         const progressTrack = document.getElementById('progressTrack');
         const playerStatus = document.getElementById('playerStatus');
+        const dragPlayer = document.getElementById('dragPlayer');
 
         function playAudioEngine() {
             if (audio.paused) {
                 audio.play().then(() => {
                     playIcon.style.display = 'none';
-                    pauseIcon.style.display = 'block';
-                    playerStatus.innerText = 'PLAYING';
-                }).catch(err => {
-                    console.log("Autoplay context waiting for standard tap event trigger");
-                });
-            }
-        }
 
-        // Smoothly triggers music playback as soon as the user interacts with the page
-        document.body.addEventListener('click', playAudioEngine, { once: true });
-
-        // Toggles manually when clicking play/pause button directly
-        playBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (audio.paused) {
-                audio.play();
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-                playerStatus.innerText = 'PLAYING';
-            } else {
-                audio.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-                playerStatus.innerText = 'PAUSED';
-            }
-        });
-
-        // Monitors tracking progress bar percentages
 
 
 

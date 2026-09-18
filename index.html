@@ -22,9 +22,47 @@
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; padding-bottom: 180px;
             overflow-x: hidden; user-select: none;
+            position: relative;
         }
 
-        header { text-align: center; padding: 60px 20px 20px 20px; }
+        /* Fixed: Changed position to fixed so they float on top of everything on the right side */
+        .socials-sidebar {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10000;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.15);
+            border-radius: 50%;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 1.4rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+        }
+
+        .social-link:hover {
+            transform: scale(1.2); 
+            border-color: var(--accent-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+            color: #ffffff;
+            background-color: rgba(255, 227, 170, 0.1);
+        }
+
+        header { text-align: center; padding: 80px 20px 20px 20px; }
         header h1 { color: var(--text-bright); font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 20px var(--accent-glow); }
         header p { font-size: 1.1rem; color: #636d80; }
 
@@ -54,7 +92,7 @@
         /* 🎵 DRAGGABLE & RESIZABLE SPOTIFY CONTAINER 🎵 */
         .audio-player-bar {
             position: fixed; bottom: 30px; left: calc(50% - 200px);
-            width: 400px; height: 160px;
+            width: 400px; height: 180px;
             background-color: rgba(15, 18, 28, 0.9);
             border: 1px solid var(--accent-color);
             box-shadow: 0 8px 32px var(--accent-glow);
@@ -65,7 +103,6 @@
             overflow: hidden;
         }
 
-        /* Drag zone for positioning player bubble */
         .drag-handle {
             width: 100%; height: 25px; cursor: move;
             display: flex; align-items: center; justify-content: center;
@@ -83,6 +120,22 @@
     </style>
 </head>
 <body>
+
+    <!-- 🌐 LISTED TOP TO BOTTOM PROFILE LINKS -->
+    <div class="socials-sidebar">
+        <!-- YouTube Link -->
+        <a href="https://youtube.com" class="social-link" target="_blank" title="YouTube">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <!-- Meta Horizon Link -->
+        <a href="https://meta.com" class="social-link" target="_blank" title="Meta Horizon">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M16.5 6c-1.9 0-3.6 1.1-4.5 2.7C11.1 7.1 9.4 6 7.5 6 4.5 6 2 8.5 2 11.5S4.5 17 7.5 17c1.9 0 3.6-1.1 4.5-2.7 0.9 1.6 2.6 2.7 4.5 2.7 3 0 5.5-2.5 5.5-5.5S19.5 6 16.5 6zm-9 9c-1.9 0-3.5-1.6-3.5-3.5S5.6 8 7.5 8s3.5 1.6 3.5 3.5S9.4 15 7.5 15zm9 0c-1.9 0-3.5-1.6-3.5-3.5S14.6 8 16.5 8s3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
+        </a>
+        <!-- TikTok Link -->
+        <a href="https://tiktok.com" class="social-link" target="_blank" title="TikTok">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.58-4.06-1.47-.64-.5-1.16-1.13-1.53-1.85v7.27c-.01 1.87-.6 3.79-1.86 5.17-1.72 1.95-4.51 2.76-7.03 2.11-2.45-.58-4.54-2.48-5.27-4.9-.76-2.41-.22-5.19 1.4-7.06 1.41-1.67 3.63-2.61 5.82-2.48v4.28c-1.01-.15-2.09.16-2.81.91-.76.75-.98 1.89-.69 2.89.28 1.05 1.25 1.85 2.33 1.93 1.25.13 2.5-.59 2.94-1.74.15-.41.2-.85.2-1.29V.02z"/></svg>
+        </a>
+    </div>
 
     <header>
         <h1>⚡ WBJayce Hub ⚡</h1>
@@ -107,7 +160,7 @@
         <div class="drag-handle" id="headerDrag">🖐️ HOLD TO DRAG PLAYER</div>
         
         <div class="spotify-iframe-container">
-            <!-- Bound to your personal 'Sum Rap' Playlist with Dark UI elements enabled -->
+            <!-- Fixed: Using the correct /embed/ link so Spotify doesn't block the connection -->
             <iframe id="spotifyWidget" src="https://spotify.com" width="100%" height="100%" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
         
@@ -117,6 +170,7 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
 
 

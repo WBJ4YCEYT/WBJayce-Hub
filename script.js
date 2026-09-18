@@ -96,7 +96,7 @@ document.addEventListener('mousemove', (e) => {
 
 document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
 
-// --- VR TOUCH DRAG MAPPING SUPPORT ---
+// VR CONTROLLER AND TOUCH EVENT HANDLERS
 dragPlayer.addEventListener('touchstart', (e) => {
     if (e.target.closest('#playBtn') || e.target.closest('#progressTrack') || e.target.closest('#volumeSlider') || e.target.closest('#resizeHandle')) return;
     isDragging = true;
@@ -133,7 +133,7 @@ document.addEventListener('touchmove', (e) => {
 
 document.addEventListener('touchend', () => { isDragging = false; isResizing = false; });
 
-// --- ✨ STARS ENGINE TRAIL ---
+// --- ✨ STARS TRAIL TRAFFIC ---
 document.addEventListener('mousemove', (e) => {
     if (Math.random() > 0.15) return;
     const star = document.createElement('div');
@@ -141,6 +141,17 @@ document.addEventListener('mousemove', (e) => {
     star.innerHTML = '★';
     star.style.left = e.clientX + 'px';
     star.style.top = e.clientY + 'px';
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), 1000);
+});
+
+document.addEventListener('touchmove', (e) => {
+    if (Math.random() > 0.15) return;
+    const star = document.createElement('div');
+    star.className = 'star-particle';
+    star.innerHTML = '★';
+    star.style.left = e.touches[0].clientX + 'px';
+    star.style.top = e.touches[0].clientY + 'px';
     document.body.appendChild(star);
     setTimeout(() => star.remove(), 1000);
 });

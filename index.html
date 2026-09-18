@@ -1,9 +1,13 @@
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WBJayce Hub</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-color: #060709;
@@ -13,149 +17,496 @@
             --text-color: #abb2bf;
             --text-bright: #ffffff;
             --radius-lg: 24px;
+            --radius-sm: 12px;
             --radius-full: 9999px;
         }
-/* SOCIAL SIDEBAR STYLING */
-        .socials-sidebar {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 100;
+
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
-        .social-link {
-            width: 45px;
-            height: 45px;
-            border-radius: var(--radius-full);
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.1);
-            color: var(--text-bright);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #060709 0%, #0d0f14 50%, #151821 100%);
+            color: var(--text-color);
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; padding-bottom: 180px;
+            overflow-x: hidden; user-select: none;
+        }
+
+        /* CLICK TO ENTER OVERLAY */
+        #enter-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            z-index: 99999;
+            cursor: pointer;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #enter-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .enter-text {
+            color: var(--text-bright);
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--accent-glow);
+            animation: pulse 1.5s infinite;
+            background: rgba(20, 23, 34, 0.85);
+            padding: 16px 32px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255, 227, 170, 0.2);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.96); }
+        }
+
+        /* SOCIAL SIDEBAR STYLING */
+        .socials-sidebar {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10000;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.15);
+            border-radius: var(--radius-full);
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
         }
 
         .social-link:hover {
-            color: var(--accent-color);
+            transform: scale(1.2); 
             border-color: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-glow);
-            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--accent-glow);
+            color: #ffffff;
         }
 
-        /* MAIN CONTAINER */
-        .container {
-            width: 100%;
-            max-width: 800px;
-            padding: 40px 20px 0;
+        header { text-align: center; padding: 80px 20px 20px 20px; }
+        header h1 { color: var(--text-bright); font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 20px var(--accent-glow); }
+        header p { font-size: 1.1rem; color: #636d80; }
+
+        main { width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
+        .section-title { 
+            color: var(--text-bright); 
+            border-bottom: 2px solid var(--accent-color); 
+            padding-bottom: 8px; 
+            margin-top: 40px; 
+            font-size: 1.4rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+        }
+        
+        .grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-top: 20px; }
+        @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card h3 { margin: 0 0 10px 0; color: var(--text-bright); font-size: 1.3rem; }
+        .card p { margin: 0 0 24px 0; font-size: 0.95rem; color: #737d8f; line-height: 1.6; }
+
+        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: var(--radius-full); cursor: pointer; border: none; }
+        .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
+
+        /* FOOTER DISCLAIMER */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555d6b;
+            max-width: 600px;
+        }
+
+        /* MODERN MINIMIZABLE MUSIC PLAYER */
+        .modern-player {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 420px;
+            background: rgba(15, 18, 28, 0.9);
+            border: 1px solid rgba(255, 227, 170, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            z-index: 9999;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .player-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .album-art {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 227, 170, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .track-details {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .track-status {
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: var(--accent-color);
+            margin: 0;
+            font-weight: 800;
+        }
+
+        .track-title {
+            color: var(--text-bright);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin: 2px 0 0 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: 1px solid rgba(255, 227, 170, 0.2);
+            color: var(--accent-color);
+            border-radius: var(--radius-full);
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+        }
+
+        .player-controls {
+            margin-top: 14px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 10px;
+            max-height: 120px;
+            opacity: 1;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
         }
 
-        .profile-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.15);
-            border-radius: var(--radius-lg);
-            padding: 30px;
+        .progress-bar-container {
             width: 100%;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .profile-card h1 {
-            color: var(--text-bright);
-            margin: 0 0 10px;
-            font-size: 2rem;
-        }
-
-        .profile-card p {
-            margin: 0;
-            font-size: 0.95rem;
-        }
-
-        /* MUSIC PLAYER */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.2);
-            border-radius: var(--radius-full);
-            padding: 12px 24px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            z-index: 1000;
+            gap: 10px;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            border-radius: var(--radius-full);
+        }
+
+        .time-text {
+            font-size: 0.7rem;
+            color: var(--text-color);
+            min-width: 32px;
+        }
+
+        .playback-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
         }
 
         .play-btn {
-            background: none;
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            color: #000;
+            border-radius: var(--radius-full);
+            font-size: 0.95rem;
             border: none;
-            color: var(--accent-color);
-            font-size: 1.2rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* MINIMIZED PLAYER STATE */
+        .modern-player.minimized {
+            padding: 10px 16px;
+            max-width: 280px;
+            border-radius: var(--radius-full);
+        }
+
+        .modern-player.minimized .player-controls {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+            pointer-events: none;
+        }
+
+        .modern-player.minimized .album-art {
+            width: 32px;
+            height: 32px;
+            font-size: 0.85rem;
+            border-radius: var(--radius-full);
         }
     </style>
 </head>
 <body>
 
-    <!-- OVERLAY -->
-    <div id="enter-overlay" onclick="enterSite()">
-        <div class="enter-text">Click to Enter</div>
+    <!-- CLICK TO ENTER OVERLAY -->
+    <div id="enter-overlay">
+        <div class="enter-text">[ click to enter ]</div>
     </div>
 
-    <!-- SIDEBAR -->
+    <!-- SOCIAL LINKS SIDEBAR -->
     <div class="socials-sidebar">
-        <a href="#" class="social-link"><i class="fa-brands fa-discord"></i></a>
-        <a href="#" class="social-link"><i class="fa-brands fa-youtube"></i></a>
-        <a href="#" class="social-link"><i class="fa-brands fa-github"></i></a>
+        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank" title="YouTube">
+            <i class="fa-brands fa-youtube"></i>
+        </a>
+        <a href="https://horizon.meta.com/profile/622800940922066?hwsh=1208710486115575410512181" class="social-link" target="_blank" title="Meta Horizon">
+            <i class="fa-solid fa-vr-cardboard"></i>
+        </a>
+        <a href="https://tiktok.com/@wbj4yce" class="social-link" target="_blank" title="TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+        </a>
+        <a href="https://gofile.io/d/keCQJbmK" class="social-link" target="_blank" title="GoFile Folder">
+            <i class="fa-solid fa-folder-open"></i>
+        </a>
     </div>
 
-    <!-- MAIN HUB -->
-    <div class="container">
-        <div class="profile-card">
-            <h1>WBJayce</h1>
-            <p>Welcome to the official hub.</p>
+    <header>
+        <h1>⚡ WBJayce Hub ⚡</h1>
+        <p>One click away from getting banned🙃</p>
+    </header>
+
+    <main>
+        <h2 class="section-title">Meta Tag Downloads</h2>
+        <div class="grid">
+            <!-- DOWNLOAD CARD 1 -->
+            <div class="card">
+                <div>
+                    <h3>Nitro Client (OP)</h3>
+                    <p>Download the latest Nitro Client menu for Meta Tag here.</p>
+                </div>
+                <a href="https://mediafire.com/file_link_1" class="btn btn-primary" target="_blank">Download</a>
+            </div>
+
+            <!-- DOWNLOAD CARD 2 -->
+            <div class="card">
+                <div>
+                    <h3>Joker Client (Mid)</h3>
+                    <p>This Modded Apk of Meta Tag, is Joker client, and Zarth modding hub put together</p>
+                </div>
+                <a href="https://www.mediafire.com/file/mojovalymlipshg/MetaTag_ZarthModdingHub_1.1.43.apk/file" class="btn btn-primary" target="_blank">Download</a>
+            </div>
+
+            <!-- DOWNLOAD CARD 3 -->
+            <div class="card">
+                <div>
+                    <h3>MMA Client (cheeks)</h3>
+                    <p>Not fully built😔</p>
+                </div>
+                <a href="https://www.mediafire.com/file/1cjed0zr7dnap43/MetaTag-MMA-8-10-26+(2)+(1).apk/file" class="btn btn-primary" target="_blank">Download</a>
+            </div>
+
+            <!-- DOWNLOAD CARD 4 -->
+            <div class="card">
+                <div>
+                    <h3>SPM Client (BOOTY BUTT😭)</h3>
+                    <p>The worst, This SUCKS</p>
+                </div>
+                <a href="https://www.mediafire.com/file/m3ydunfnortatoi/MetaTag-SPM-8-21-26+(1).apk/file" class="btn btn-primary" target="_blank">Download</a>
+            </div>
+
+            <!-- DOWNLOAD CARD 5 -->
+            <div class="card">
+                <div>
+                    <h3>Flow Client (Mid)</h3>
+                    <p>A lot of mods, some don't work,and confusing</p>
+                </div>
+                <a href="https://www.mediafire.com/file/j425743qrp5f38r/MetaTag-7-6-26+modded.by.junior.apk/file" class="btn btn-primary" target="_blank">Download</a>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <!-- AUDIO -->
-    <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <footer>
+        <p>⚠️DISCLAIMER⚠️, This site is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Meta Platforms, Inc. or Meta Tag.</p>
+    </footer>
 
-    <div class="music-player">
-        <button class="play-btn" onclick="toggleAudio()"><i id="music-icon" class="fa-solid fa-pause"></i></button>
-        <span style="font-size: 0.85rem; color: var(--text-bright);">Background Audio</span>
+    <!-- MODERN AUDIO PLAYER -->
+    <div class="modern-player" id="musicPlayer">
+        <div class="player-top">
+            <div class="album-art">
+                <i class="fa-solid fa-music"></i>
+            </div>
+            <div class="track-details">
+                <p class="track-status">NOW PLAYING</p>
+                <p class="track-title">Eazy-E - No More Muthafuckas</p>
+            </div>
+            <div class="player-actions">
+                <button class="icon-btn" id="minimizeBtn" title="Minimize">
+                    <i class="fa-solid fa-chevron-down" id="minimizeIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="player-controls">
+            <div class="progress-bar-container">
+                <span class="time-text" id="currentTime">0:00</span>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="time-text" id="duration">0:00</span>
+            </div>
+
+            <div class="playback-buttons">
+                <button class="play-btn" id="playPauseBtn">
+                    <i class="fa-solid fa-pause" id="playIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <audio id="bgAudio" src="song.mp3" loop></audio>
     </div>
 
     <script>
-        const audio = document.getElementById('bg-music');
-        const icon = document.getElementById('music-icon');
+        const overlay = document.getElementById('enter-overlay');
+        const audio = document.getElementById('bgAudio');
+        const musicPlayer = document.getElementById('musicPlayer');
+        const minimizeBtn = document.getElementById('minimizeBtn');
+        const minimizeIcon = document.getElementById('minimizeIcon');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
 
-        function enterSite() {
-            document.getElementById('enter-overlay').classList.add('hidden');
+        // Click to Enter logic
+        overlay.addEventListener('click', () => {
+            overlay.classList.add('hidden');
             audio.play().catch(() => {});
-        }
+        });
 
-        function toggleAudio() {
+        // Minimize player logic
+        minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            musicPlayer.classList.toggle('minimized');
+            if (musicPlayer.classList.contains('minimized')) {
+                minimizeIcon.className = 'fa-solid fa-chevron-up';
+            } else {
+                minimizeIcon.className = 'fa-solid fa-chevron-down';
+            }
+        });
+
+        // Play/Pause toggle
+        playPauseBtn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                icon.className = 'fa-solid fa-pause';
+                playIcon.className = 'fa-solid fa-pause';
             } else {
                 audio.pause();
-                icon.className = 'fa-solid fa-play';
+                playIcon.className = 'fa-solid fa-play';
             }
+        });
+
+        // Update progress bar
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const pct = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = pct + '%';
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                durationEl.textContent = formatTime(audio.duration);
+            }
+        });
+
+        // Seek on progress bar click
+        progressBar.addEventListener('click', (e) => {
+            const rect = progressBar.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = pos * audio.duration;
+        });
+
+        function formatTime(sec) {
+            const mins = Math.floor(sec / 60);
+            const secs = Math.floor(sec % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
         }
     </script>
 </body>
 </html>
+

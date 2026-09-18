@@ -1,3 +1,6 @@
+player engine, and commit changes:
+
+```javascript
 const audio = document.getElementById('bgMusic');
 const dragPlayer = document.getElementById('dragPlayer');
 const playBtn = document.getElementById('playBtn');
@@ -8,37 +11,72 @@ const progressTrack = document.getElementById('progressTrack');
 const playerStatus = document.getElementById('playerStatus');
 const volumeSlider = document.getElementById('volumeSlider');
 const resizeHandle = document.getElementById('resizeHandle');
+const trackLabel = document.getElementById('trackLabel');
+const nextBtn = document.getElementById('nextBtn');
 
-// --- 🎧 AUDIO ENGINE LOGIC ---
-function playAudioEngine() {
-    if (audio.paused) {
-        audio.play().then(() => {
-            playIcon.style.display = 'none';
-            pauseIcon.style.display = 'block';
-            playerStatus.innerText = 'PLAYING';
-        }).catch((err) => {
-            console.log("Audio failed to auto-start:", err);
-        });
-    }
+// 📋 SEQUENCE PLAYLIST (Your Exact Sum Rap Tracks)
+// Note: When you upload these song audio files, make sure they match these names exactly!
+const playlist = [
+    { name: "Eazy-E - No More ?'s", url: "song.mp3" },
+    { name: "Roddy Ricch - The Box", url: "thebox.mp3" },
+    { name: "Lil Tjay - F.N", url: "fn.mp3" }
+];
+
+let currentTrackIndex = 0;
+
+function loadTrack(index) {
+    if (playlist.length === 0) return;
+    audio.src = playlist[index].url;
+    trackLabel.innerText = playlist[index].name;
+    audio.load();
 }
 
-// Fixed: Only trigger autoplay on background page clicks, NOT when clicking player controls
-document.addEventListener('click', (e) => {
-    if (e.target.closest('#dragPlayer')) return;
-    playAudioEngine();
-}, { once: true });
+function nextTrack() {
+    currentTrackIndex++;
+    // Loops back to track 1 if playlist runs out
+    if (currentTrackIndex >= playlist.length) {
+        currentTrackIndex = 0;
+    }
+    loadTrack(currentTrackIndex);
+    audio.play().then(() => {
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+        playerStatus.innerText = 'PLAYING';
+    }).catch(() => {});
+}
 
-// Fixed toggle action loop
+// Initial initialization
+loadTrack(currentTrackIndex);
+
+// Manual Skip Button
+nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    nextTrack();
+});
+
+// Automatic Sequencer Playback Controller
+audio.addEventListener('ended', nextTrack);
+
+// --- 🎧 AUDIO NAVIGATION HANDLERS ---
+function playAudioEngine() {
+    if (audio.paused && audio.currentTime === 0) {
+        audio.play().then(() => {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+            playerStatus.innerText = 'PLAYING';
+        }).catch(() => {});
+    }
+}
+document.body.addEventListener('click', playAudioEngine, { once: true });
+
 playBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    e.preventDefault();
-    
     if (audio.paused) {
         audio.play().then(() => {
             playIcon.style.display = 'none';
             pauseIcon.style.display = 'block';
             playerStatus.innerText = 'PLAYING';
-        }).catch(err => console.log(err));
+        }).catch(() => {});
     } else {
         audio.pause();
         playIcon.style.display = 'block';
@@ -64,78 +102,52 @@ volumeSlider.addEventListener('input', (e) => {
     audio.volume = e.target.value;
 });
 
-// --- 🖐️ DRAG & RESIZE ENGINE ---
+// --- 🖐️ DRAG & RESIZE PANEL HANDLING ---
 let isDragging = false, isResizing = false;
 let startX, startY, startWidth, startHeight, startLeft, startTop;
 
-function onStartDrag(e) {
-    if (e.target.closest('#playBtn') || e.target.closest('#progressTrack') || e.target.closest('#volumeSlider') || e.target.closest('#resizeHandle')) return;
+dragPlayer.addEventListener('mousedown', (e) => {
+    if (e.target.closest('#playBtn') || e.target.closest('#nextBtn') || e.target.closest('#progressTrack') || e.target.closest('#volumeSlider') || e.target.closest('#resizeHandle')) return;
     isDragging = true;
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-    startX = clientX; startY = clientY;
+    startX = e.clientX; startY = e.clientY;
     startLeft = dragPlayer.offsetLeft; startTop = dragPlayer.offsetTop;
     dragPlayer.style.transition = 'none';
-}
+});
 
-function onStartResize(e) {
+resizeHandle.addEventListener('mousedown', (e) => {
     isResizing = true;
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-    startX = clientX; startY = clientY;
+    startX = e.clientX; startY = e.clientY;
     startWidth = parseInt(document.defaultView.getComputedStyle(dragPlayer).width, 10);
     startHeight = parseInt(document.defaultView.getComputedStyle(dragPlayer).height, 10);
     dragPlayer.style.transition = 'none';
-    e.preventDefault();
-    e.stopPropagation();
-}
+    e.preventDefault(); e.stopPropagation();
+});
 
-function onMove(e) {
-    if (!isDragging && !isResizing) return;
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
+document.addEventListener('mousemove', (e) => {
     if (isDragging) {
-        let nx = startLeft + (clientX - startX);
-        let ny = startTop + (clientY - startY);
+        let nx = startLeft + (e.clientX - startX);
+        let ny = startTop + (e.clientY - startY);
         dragPlayer.style.left = Math.max(0, Math.min(nx, window.innerWidth - dragPlayer.clientWidth)) + 'px';
         dragPlayer.style.top = Math.max(0, Math.min(ny, window.innerHeight - dragPlayer.clientHeight)) + 'px';
         dragPlayer.style.bottom = 'auto';
     }
     if (isResizing) {
-        dragPlayer.style.width = Math.max(280, startWidth + (clientX - startX)) + 'px';
-        dragPlayer.style.height = Math.max(120, startHeight + (clientY - startY)) + 'px';
+        dragPlayer.style.width = Math.max(300, startWidth + (e.clientX - startX)) + 'px';
+        dragPlayer.style.height = Math.max(120, startHeight + (e.clientY - startY)) + 'px';
     }
-}
+});
 
-function onEnd() { isDragging = false; isResizing = false; }
+document.addEventListener('mouseup', () => { isDragging = false; isResizing = false; });
 
-dragPlayer.addEventListener('mousedown', onStartDrag);
-resizeHandle.addEventListener('mousedown', onStartResize);
-document.addEventListener('mousemove', onMove);
-document.addEventListener('mouseup', onEnd);
-
-dragPlayer.addEventListener('touchstart', onStartDrag, { passive: true });
-resizeHandle.addEventListener('touchstart', onStartResize, { passive: false });
-document.addEventListener('touchmove', onMove, { passive: false });
-document.addEventListener('touchend', onEnd);
-
-// --- ✨ STARS ENGINE ---
-function createStarTrail(clientX, clientY) {
+// --- ✨ STARS ENGINE TRAIL ---
+document.addEventListener('mousemove', (e) => {
     if (Math.random() > 0.15) return;
     const star = document.createElement('div');
     star.className = 'star-particle';
     star.innerHTML = '★';
-    star.style.left = clientX + 'px';
-    star.style.top = clientY + 'px';
+    star.style.left = e.clientX + 'px';
+    star.style.top = e.clientY + 'px';
     document.body.appendChild(star);
     setTimeout(() => star.remove(), 1000);
-}
-
-document.addEventListener('mousemove', (e) => createStarTrail(e.clientX, e.clientY));
-document.addEventListener('touchmove', (e) => {
-    if (e.touches && e.touches[0]) {
-        createStarTrail(e.touches[0].clientX, e.touches[0].clientY);
-    }
 });
 

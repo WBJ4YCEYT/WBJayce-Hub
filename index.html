@@ -1,10 +1,3 @@
-
-Here is your updated HTML code with two major upgrades:
-
-1. **Collapsible Music Player:** Added a toggle button in the header bar of the player so users can shrink (minimize) and expand the player at will.
-2. **Multiple MediaFire Downloads:** Replaced the single download card with a multi-card grid structure so you can easily add as many MediaFire links as needed.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +20,7 @@ Here is your updated HTML code with two major upgrades:
             color: var(--text-color);
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; padding-bottom: 150px;
+            min-height: 100vh; padding-bottom: 180px;
             overflow-x: hidden; user-select: none;
         }
 
@@ -89,6 +82,16 @@ Here is your updated HTML code with two major upgrades:
 
         .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 50px; cursor: pointer; }
         .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
+
+        /* FOOTER DISCLAIMER */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #555d6b;
+            max-width: 600px;
+        }
 
         /* RESIZABLE / MINIMIZABLE AUDIO PLAYER */
         .audio-player-bar {
@@ -218,6 +221,10 @@ Here is your updated HTML code with two major upgrades:
         </div>
     </main>
 
+    <footer>
+        <p>Disclaimer: This site is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Meta Platforms, Inc. or Meta Tag.</p>
+    </footer>
+
     <!-- Native Browser Audio Controller Widget -->
     <div class="audio-player-bar" id="audioPlayerBar">
         <div class="player-header">
@@ -247,5 +254,3 @@ Here is your updated HTML code with two major upgrades:
     </script>
 </body>
 </html>
-
-```

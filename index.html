@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DO<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,11 +20,12 @@
             color: var(--text-color);
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; padding-bottom: 180px;
+            min-height: 100vh; padding-bottom: 150px;
             overflow-x: hidden; user-select: none;
             position: relative;
         }
 
+        /* GUNS.LOL STYLE FIXED RIGHT SIDEBAR SOCIALS PANEL */
         .socials-sidebar {
             position: fixed;
             top: 30px;
@@ -88,9 +89,10 @@
         .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
         .btn-primary:hover { background-color: #ffffff; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,255,0.4); }
 
+        /* Draggable & Resizable Music Bubble Bar */
         .audio-player-bar {
             position: fixed; bottom: 30px; left: calc(50% - 200px);
-            width: 400px; height: 125px;
+            width: 400px; height: 120px;
             background-color: rgba(15, 18, 28, 0.85);
             border: 1px solid var(--accent-color);
             box-shadow: 0 8px 32px var(--accent-glow);
@@ -101,19 +103,18 @@
         }
 
         .player-top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .track-details { overflow: hidden; width: 60%; }
+        .track-details { overflow: hidden; width: 65%; }
         .track-status { font-size: 0.7rem; letter-spacing: 1.5px; color: var(--accent-color); margin: 0; font-weight: 800; }
         .track-name { color: var(--text-bright); font-size: 0.95rem; font-weight: 700; margin: 2px 0 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .volume-box { display: flex; align-items: center; width: 35%; gap: 6px; }
+        .volume-box { display: flex; align-items: center; width: 30%; gap: 6px; }
         .volume-box span { font-size: 0.8rem; color: var(--accent-color); }
-        .volume-slider { width: 100%; accent-color: var(--accent-color); cursor: pointer; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); }
+        .volume-slider { width: 100%; accent-color: var(--accent-color); cursor: pointer; height: 4px; border-radius: 2px; }
 
         .player-bottom { display: flex; align-items: center; width: 100%; gap: 15px; margin-top: 4px; }
         .progress-container { flex-grow: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; position: relative; cursor: pointer; }
         .progress-bar { height: 100%; background: var(--accent-color); width: 0%; border-radius: 10px; }
         
-        .controls-wrapper { display: flex; align-items: center; gap: 12px; }
         .controls-btn { background: var(--accent-color); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 10px var(--accent-glow); flex-shrink: 0; }
         .controls-btn svg { fill: #000000; width: 14px; height: 14px; }
 
@@ -124,6 +125,7 @@
 </head>
 <body>
 
+    <!-- REAL HARDCODED LINKS LISTED TOP TO BOTTOM -->
     <div class="socials-sidebar">
         <a href="https://youtube.com" class="social-link" target="_blank" title="YouTube">
             <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -142,6 +144,7 @@
     </header>
 
     <main>
+        <!-- META TAG SECTION -->
         <h2 class="section-title">Meta Tag</h2>
         <div class="grid">
             <div class="card">
@@ -149,21 +152,20 @@
                     <h3>Meta tag- Nitro Client (OP)</h3>
                     <p>Download the latest Nitro Client menu for Meta Tag here.</p>
                 </div>
+                <!-- HARDCODED DIRECT DOWNLOAD LINK -->
                 <a href="https://mediafire.com" class="btn btn-primary" target="_blank">Download</a>
             </div>
         </div>
     </main>
 
-    <audio id="bgMusic"></audio>
+    <!-- Invisible Background Song Tag -->
+    <audio id="bgMusic" src="song.mp3" loop></audio>
 
+    <!-- Draggable & Resizable Player Window -->
     <div class="audio-player-bar" id="dragPlayer">
         <div class="player-top">
             <div class="track-details">
                 <p class="track-status" id="playerStatus">PAUSED</p>
-                <p class="track-name" id="trackLabel">Loading Tracks...</p>
+                <p class="track-name" id="trackLabel">Eazy-E - No More Muthafuckas 🎧</p>
             </div>
-            <div class="volume-box">
-                <span>🔈</span>
-                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="1">
-            </div>
-        </div>
+

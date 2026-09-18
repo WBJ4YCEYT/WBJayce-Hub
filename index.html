@@ -1,3 +1,10 @@
+
+Here is your updated HTML code with two major upgrades:
+
+1. **Collapsible Music Player:** Added a toggle button in the header bar of the player so users can shrink (minimize) and expand the player at will.
+2. **Multiple MediaFire Downloads:** Replaced the single download card with a multi-card grid structure so you can easily add as many MediaFire links as needed.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,20 +83,14 @@
             border-radius: 24px;
             padding: 28px;
             display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 227, 170, 0.25);
         }
         .card h3 { margin: 0 0 10px 0; color: var(--text-bright); font-size: 1.3rem; }
         .card p { margin: 0 0 24px 0; font-size: 0.95rem; color: #737d8f; line-height: 1.6; }
 
-        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 50px; cursor: pointer; transition: background-color 0.2s; }
+        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: 50px; cursor: pointer; }
         .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
-        .btn-primary:hover { background-color: #ffffff; }
 
-        /* NATIVE AUDIO PLAYER CONTAINER (WITH COLLAPSE SUPPORT) */
+        /* RESIZABLE / MINIMIZABLE AUDIO PLAYER */
         .audio-player-bar {
             position: fixed; 
             bottom: 30px; 
@@ -101,66 +102,67 @@
             border: 1px solid var(--accent-color);
             box-shadow: 0 8px 32px var(--accent-glow);
             backdrop-filter: blur(20px);
-            border-radius: 30px; 
+            border-radius: 25px; 
             padding: 16px 22px;
             z-index: 9999; 
             box-sizing: border-box;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s ease-in-out;
         }
 
-        /* Compact state when minimized */
-        .audio-player-bar.minimized {
-            padding: 8px 18px;
-            max-width: 220px;
-            border-radius: 50px;
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .audio-player-bar.minimized audio,
-        .audio-player-bar.minimized .track-status {
-            display: none;
-        }
+        .track-info { margin-bottom: 0; }
+        .track-status { font-size: 0.7rem; letter-spacing: 1.5px; color: var(--accent-color); margin: 0; font-weight: 800; }
+        .track-name { color: var(--text-bright); font-size: 0.95rem; font-weight: 700; margin: 2px 0 0 0; }
 
-        .audio-player-bar.minimized .track-name {
-            margin: 0;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .player-toggle-btn {
-            position: absolute;
-            top: -12px;
-            right: 15px;
-            background: var(--accent-color);
-            color: #000;
-            border: none;
-            width: 26px;
-            height: 26px;
+        .toggle-btn {
+            background: none;
+            border: 1px solid rgba(255, 227, 170, 0.3);
+            color: var(--accent-color);
             border-radius: 50%;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            line-height: 1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s ease;
+            font-size: 0.8rem;
+            transition: background 0.2s;
         }
 
-        .player-toggle-btn:hover {
-            transform: scale(1.15);
+        .toggle-btn:hover {
+            background: var(--accent-color);
+            color: #000;
         }
 
-        .track-info { margin-bottom: 10px; }
-        .track-status { font-size: 0.7rem; letter-spacing: 1.5px; color: var(--accent-color); margin: 0; font-weight: 800; }
-        .track-name { color: var(--text-bright); font-size: 0.95rem; font-weight: 700; margin: 2px 0 0 0; }
+        .player-content {
+            margin-top: 12px;
+            max-height: 100px;
+            opacity: 1;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+        }
 
         audio {
             width: 100%;
             accent-color: var(--accent-color);
+        }
+
+        /* MINIMIZED PLAYER STATE */
+        .audio-player-bar.minimized {
+            padding: 10px 20px;
+            max-width: 300px;
+        }
+
+        .audio-player-bar.minimized .player-content {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -168,28 +170,82 @@
 
     <!-- SOCIAL LINKS -->
     <div class="socials-sidebar">
-        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank" title="YouTube">
-            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 Here is your updated HTML/CSS/JS file. 
+        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://horizon.meta.com/profile/622800940922066?hwsh=1208710486115575410512181" class="social-link" target="_blank">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M16.5 6c-1.9 0-3.6 1.1-4.5 2.7C11.1 7.1 9.4 6 7.5 6 4.5 6 2 8.5 2 11.5S4.5 17 7.5 17c1.9 0 3.6-1.1 4.5-2.7 0.9 1.6 2.6 2.7 4.5 2.7 3 0 5.5-2.5 5.5-5.5S19.5 6 16.5 6zm-9 9c-1.9 0-3.5-1.6-3.5-3.5S5.6 8 7.5 8s3.5 1.6 3.5 3.5S9.4 15 7.5 15zm9 0c-1.9 0-3.5-1.6-3.5-3.5S14.6 8 16.5 8s3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
+        </a>
+        <a href="https://tiktok.com/@wbj4yce" class="social-link" target="_blank">
+            <svg style="width:24px;height:24px;fill:currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.58-4.06-1.47-.64-.5-1.16-1.13-1.53-1.85v7.27c-.01 1.87-.6 3.79-1.86 5.17-1.72 1.95-4.51 2.76-7.03 2.11-2.45-.58-4.54-2.48-5.27-4.9-.76-2.41-.22-5.19 1.4-7.06 1.41-1.67 3.63-2.61 5.82-2.48v4.28c-1.01-.15-2.09.16-2.81.91-.76.75-.98 1.89-.69 2.89.28 1.05 1.25 1.85 2.33 1.93 1.25.13 2.5-.59 2.94-1.74.15-.41.2-.85.2-1.29V.02z"/></svg>
+        </a>
+    </div>
 
-It includes a **toggleable collapse/expand button** for the music player bar, allowing users to shrink it to a minimal badge or expand it back to full controls. It also includes an expanded grid showing **multiple MediaFire downloads**.
+    <header>
+        <h1>⚡ WBJayce Hub ⚡</h1>
+        <p>One click away from getting banned🙃</p>
+    </header>
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WBJayce Hub</title>
-    <style>
-        :root {
-            --bg-color: #060709;
-            --card-bg: rgba(20, 23, 34, 0.6);
-            --accent-color: #ffe3aa; 
-            --accent-glow: rgba(255, 227, 170, 0.35);
-            --text-color: #abb2bf;
-            --text-bright: #ffffff;
-        }
+    <main>
+        <h2 class="section-title">Meta Tag Downloads</h2>
+        <div class="grid">
+            <!-- DOWNLOAD CARD 1 -->
+            <div class="card">
+                <div>
+                    <h3>Nitro Client (OP)</h3>
+                    <p>Download the latest Nitro Client menu for Meta Tag here.</p>
+                </div>
+                <a href="https://mediafire.com/file_link_1" class="btn btn-primary" target="_blank">Download</a>
+            </div>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background: linear-gradient(
+            <!-- DOWNLOAD CARD 2 -->
+            <div class="card">
+                <div>
+                    <h3>Menu Option #2</h3>
+                    <p>Alternative menu mod for Meta Tag with updated bypass features.</p>
+                </div>
+                <a href="https://mediafire.com/file_link_2" class="btn btn-primary" target="_blank">Download</a>
+            </div>
+
+            <!-- DOWNLOAD CARD 3 -->
+            <div class="card">
+                <div>
+                    <h3>Menu Option #3</h3>
+                    <p>Additional script configuration and utilities for Meta Tag.</p>
+                </div>
+                <a href="https://mediafire.com/file_link_3" class="btn btn-primary" target="_blank">Download</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Native Browser Audio Controller Widget -->
+    <div class="audio-player-bar" id="audioPlayerBar">
+        <div class="player-header">
+            <div class="track-info">
+                <p class="track-status">NOW PLAYING</p>
+                <p class="track-name">Eazy-E - No More Muthafuckas</p>
+            </div>
+            <button class="toggle-btn" id="togglePlayer" aria-label="Toggle Player">—</button>
+        </div>
+        <div class="player-content">
+            <audio src="song.mp3" controls loop></audio>
+        </div>
+    </div>
+
+    <script>
+        const playerBar = document.getElementById('audioPlayerBar');
+        const toggleBtn = document.getElementById('togglePlayer');
+
+        toggleBtn.addEventListener('click', () => {
+            playerBar.classList.toggle('minimized');
+            if (playerBar.classList.contains('minimized')) {
+                toggleBtn.textContent = '▲';
+            } else {
+                toggleBtn.textContent = '—';
+            }
+        });
+    </script>
+</body>
+</html>
+
+```

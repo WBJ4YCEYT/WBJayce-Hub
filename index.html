@@ -6,12 +6,14 @@
     <title>WBJayce Hub</title>
     <style>
         :root {
-            --bg-color: #0d0e12;
-            --card-bg: #141722;
-            --accent-color: #ffe3aa; /* Orange Theme color #ffe3aa */
-            --accent-glow: rgba(255, 227, 170, 0.45);
+            --bg-color: #050608;
+            --card-bg: rgba(20, 23, 34, 0.65);
+            --accent-color: #ffe3aa; 
+            --accent-glow: rgba(255, 227, 170, 0.35);
             --text-color: #abb2bf;
             --text-bright: #ffffff;
+            --panel-radius: 24px;   /* Ultra-rounded panel corners */
+            --button-radius: 30px;  /* Fully pill-shaped rounded buttons */
         }
 
         body {
@@ -23,27 +25,58 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-bottom: 120px; 
+            padding-bottom: 160px; 
             overflow-x: hidden;
             user-select: none;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* 🌌 CYBERPUNK AMBIENT BACKGROUND GLOW MATRIX */
+        .bg-glow-matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 20%, rgba(255, 227, 170, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(255, 227, 170, 0.06) 0%, transparent 45%);
+            animation: pulseGlow 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
         }
 
         header {
             text-align: center;
-            padding: 50px 20px 30px 20px;
+            padding: 60px 20px 30px 20px;
             max-width: 600px;
+            z-index: 10;
         }
 
         header h1 {
             color: var(--text-bright);
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px var(--accent-glow);
+            font-size: 3rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 20px var(--accent-glow);
         }
 
         header p {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: #7d8594;
+            backdrop-filter: blur(4px);
+            background: rgba(255,255,255,0.02);
+            padding: 8px 20px;
+            border-radius: var(--button-radius);
+            border: 1px solid rgba(255,255,255,0.05);
+            display: inline-block;
         }
 
         main {
@@ -51,24 +84,26 @@
             max-width: 800px;
             padding: 20px;
             box-sizing: border-box;
+            z-index: 10;
         }
 
         .section-title {
             color: var(--text-bright);
             border-bottom: 2px solid var(--accent-color);
-            box-shadow: 0 2px 8px -2px var(--accent-glow);
-            padding-bottom: 8px;
+            box-shadow: 0 4px 12px -4px var(--accent-glow);
+            padding-bottom: 10px;
             margin-top: 40px;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 24px;
+            margin-top: 24px;
         }
 
         @media (min-width: 600px) {
@@ -77,82 +112,93 @@
             }
         }
 
-        /* 🌟 SMOOTH EXPANDING CARDS 🌟 */
+        /* 🌟 GLASSMORPHISM CARDS WITH SMOOTH SCALING SCULPTING */
         .card {
-            background-color: var(--card-bg);
-            border: 1px solid #282e3d;
-            border-radius: 8px;
-            padding: 24px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 227, 170, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--panel-radius);
+            padding: 28px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s, box-shadow 0.4s;
             transform-origin: center center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .card:hover {
             transform: scale(1.05); 
             border-color: var(--accent-color);
-            box-shadow: 0 10px 30px var(--accent-glow);
+            box-shadow: 0 15px 35px var(--accent-glow);
         }
 
         .card h3 {
-            margin: 0 0 10px 0;
+            margin: 0 0 12px 0;
             color: var(--text-bright);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
         }
 
         .card p {
-            margin: 0 0 24px 0;
+            margin: 0 0 28px 0;
             font-size: 0.95rem;
-            color: #7d8594;
-            line-height: 1.5;
+            color: #8a92a3;
+            line-height: 1.6;
         }
 
         .btn {
             display: inline-block;
             text-align: center;
             text-decoration: none;
-            padding: 12px 20px;
+            padding: 14px 24px;
             font-size: 0.95rem;
             font-weight: 700;
-            border-radius: 6px;
-            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            border-radius: var(--button-radius);
+            transition: background 0.3s, transform 0.1s, box-shadow 0.3s;
             cursor: pointer;
+            border: none;
         }
 
         .btn-primary {
             background-color: var(--accent-color);
-            color: #000000;
-            box-shadow: 0 4px 12px var(--accent-glow);
+            color: #050608;
+            box-shadow: 0 6px 20px rgba(255, 227, 170, 0.25);
         }
 
         .btn-primary:hover {
             background-color: #fff2d4;
-            box-shadow: 0 6px 18px var(--accent-glow);
+            box-shadow: 0 8px 25px var(--accent-glow);
+            transform: translateY(-1px);
         }
 
-        /* 🎵 DRAGGABLE GUNS.LOL PLAYER BAR WIDGET 🎵 */
+        /* 🎵 PREMIUM SMART INTERACTIVE DRAGGABLE & RESIZABLE PLAYER BAR */
         .audio-player-bar {
             position: fixed;
-            bottom: 20px;
-            left: calc(50% - 225px); /* Center it by default horizontally */
-            width: calc(100% - 40px);
-            max-width: 450px;
-            background-color: rgba(20, 23, 34, 0.85);
-            border: 1px solid var(--accent-color);
-            box-shadow: 0 4px 25px var(--accent-glow);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 14px;
-            padding: 12px 20px;
+            bottom: 30px;
+            left: calc(50% - 225px); 
+            width: 450px;
+            min-width: 320px;
+            max-width: 90vw;
+            background-color: rgba(13, 15, 22, 0.75);
+            border: 1px solid rgba(255, 227, 170, 0.25);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 227, 170, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 16px 22px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             z-index: 9999;
             box-sizing: border-box;
-            cursor: move; /* Indicates it can be moved around */
-            touch-action: none; /* Stops normal phone/VR screen scrolling while moving */
+            cursor: grab;
+            touch-action: none;
+        }
+
+        .audio-player-bar:active {
+            cursor: grabbing;
         }
 
         .player-info {
@@ -161,167 +207,141 @@
             flex-grow: 1;
             margin-right: 15px;
             overflow: hidden;
-            pointer-events: none; /* Helps drag detection ignore inner text elements */
+            pointer-events: none;
         }
 
         .track-status {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: var(--accent-color);
-            margin: 0 0 2px 0;
-            font-weight: 700;
+            margin: 0 0 3px 0;
+            font-weight: 800;
+            opacity: 0.9;
         }
 
         .track-name {
             color: var(--text-bright);
-            font-size: 1rem;
-            font-weight: bold;
-            margin: 0 0 6px 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
+        /* 🎚️ MIXER CONSOLE TIMELINE AND VOLUME SLIDERS */
         .progress-container {
             width: 100%;
-            height: 4px;
-            background: #282e3d;
-            border-radius: 2px;
+            height: 5px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
             position: relative;
-            pointer-events: auto; /* Keeps progress timeline clickable */
+            pointer-events: auto;
+            cursor: pointer;
         }
 
         .progress-bar {
             height: 100%;
             background: var(--accent-color);
             width: 0%;
-            border-radius: 2px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* 🔊 VOLUME MANAGEMENT SLIDER INTERFACE */
+        .volume-container {
+            display: flex;
+            align-items: center;
+            margin-left: 12px;
+            pointer-events: auto;
+            gap: 8px;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            box-shadow: 0 0 6px var(--accent-color);
+            cursor: pointer;
+        }
+
+        .volume-icon svg {
+            fill: var(--accent-color);
+            width: 14px;
+            height: 14px;
+            display: block;
         }
 
         .controls-btn {
             background: var(--accent-color);
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 0 10px var(--accent-glow);
+            box-shadow: 0 4px 12px rgba(255, 227, 170, 0.2);
             flex-shrink: 0;
-            transition: transform 0.1s, background-color 0.2s;
-            pointer-events: auto; /* Keeps control button interactive */
+            transition: transform 0.1s, background-color 0.2s, box-shadow 0.2s;
+            pointer-events: auto;
         }
 
         .controls-btn:hover {
             background-color: #fff2d4;
+            box-shadow: 0 6px 15px var(--accent-glow);
         }
 
         .controls-btn:active {
-            transform: scale(0.92);
+            transform: scale(0.9);
         }
 
         .controls-btn svg {
-            fill: #000000;
+            fill: #050608;
             width: 16px;
             height: 16px;
         }
 
-        /* ✨ STAR TRAIL STYLING ✨ */
-        .star-particle {
-            position: fixed;
-            pointer-events: none;
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            z-index: 10000;
-            animation: fallFade 1s forwards linear;
-            text-shadow: 0 0 5px var(--accent-glow);
+        /* 📐 DRAG-RESIZE CORNER INTERFACE HINT ELEMENT */
+        .resize-handle {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 14px;
+            height: 14px;
+            cursor: se-resize;
+            background: linear-gradient(135deg, transparent 40%, var(--accent-color) 40%);
+            border-bottom-right-radius: 20px;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            pointer-events: auto;
+            z-index: 100;
         }
 
-        @keyframes fallFade {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(50px) rotate(180deg) scale(0.3);
-                opacity: 0;
-            }
-        }
 
-        footer {
-            margin-top: 60px;
-            padding: 30px 20px;
-            font-size: 0.85rem;
-            color: #565d6b;
-            text-align: center;
-            border-top: 1px solid #1c2130;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
 
-    <header>
-        <h1>⚡ WBJayce Hub ⚡</h1>
-        <p>One click away from getting banned🙃</p>
-    </header>
 
-    <main>
-        <!-- META TAG SECTION -->
-        <h2 class="section-title">Meta Tag</h2>
-        <div class="grid">
-            
-            <div class="card">
-                <div>
-                    <h3>Meta tag- Nitro Client (OP)</h3>
-                    <p>Download the latest Nitro Client menu for Meta Tag here.</p>
-                </div>
-                <a href="https://mediafire.com" class="btn btn-primary" target="_blank">Download</a>
-            </div>
 
-        </div>
-    </main>
 
-    <!-- 🎵 BACKGROUND AUDIO COMPONENT 🎵 -->
-    <audio id="bgMusic" src="song.mp3" loop></audio>
 
-    <!-- 🎵 DRAGGABLE FLOATING PLAYER BAR WIDGET 🎵 -->
-    <div class="audio-player-bar" id="dragPlayer">
-        <div class="player-info">
-            <p class="track-status" id="playerStatus">PAUSED</p>
-            <p class="track-name" id="trackLabel">Eazy-E - No More Muthafuckas 🎧</p>
-            <div class="progress-container" id="progressTrack">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-        </div>
-        <button class="controls-btn" id="playBtn">
-            <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-    </div>
 
-    <footer>
-        <p>Disclaimer: Use mods at your own risk. We are not affiliated with Meta or any game developers.</p>
-    </footer>
 
-    <!-- 🕹️ ENGINE CONTROLLERS & PARTICLE ENGINE -->
-    <script>
-        const audio = document.getElementById('bgMusic');
-        const playBtn = document.getElementById('playBtn');
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
-        const progressBar = document.getElementById('progressBar');
-        const progressTrack = document.getElementById('progressTrack');
-        const playerStatus = document.getElementById('playerStatus');
-        const dragPlayer = document.getElementById('dragPlayer');
-
-        function playAudioEngine() {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    playIcon.style.display = 'none';
 
 
 

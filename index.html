@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WBJayce Hub</title>
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -14,12 +14,11 @@
             --accent-glow: rgba(255, 227, 170, 0.35);
             --text-color: #abb2bf;
             --text-bright: #ffffff;
-            --border-radius-lg: 24px;
-            --border-radius-sm: 12px;
-            --border-radius-full: 9999px;
+            --radius-lg: 24px;
+            --radius-sm: 12px;
+            --radius-full: 9999px;
         }
 
-        /* ROUND ALL ELEMENTS GLOBALLY */
         *, *::before, *::after {
             box-sizing: border-box;
         }
@@ -56,7 +55,7 @@
 
         .enter-text {
             color: var(--text-bright);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -64,8 +63,9 @@
             animation: pulse 1.5s infinite;
             background: rgba(20, 23, 34, 0.8);
             padding: 16px 32px;
-            border-radius: var(--border-radius-full);
+            border-radius: var(--radius-full);
             border: 1px solid rgba(255, 227, 170, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         @keyframes pulse {
@@ -74,298 +74,15 @@
         }
 
         /* SOCIAL SIDEBAR STYLING */
-        .socials-sidebar {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 10000;
-        }
+        .socialsThat screen freeze usually happens when a keypress event fails to register with the operating system or the app's focus drops.
 
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.15);
-            border-radius: var(--border-radius-full);
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 1.4rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
-        }
+**Quick Troubleshooting Steps**
 
-        .social-link:hover {
-            transform: scale(1.2); 
-            border-color: var(--accent-color);
-            box-shadow: 0 0 20px var(--accent-glow);
-            color: #ffffff;
-        }
+*   **Toggle Window Focus:** Click anywhere outside the application, then click directly back inside the prompt window before pressing **Enter**. Alternatively, press `Alt + Tab` (`Cmd + Tab` on Mac) away and back.
+*   **Force an Alternative Key Input:** 
+    *   Try **Spacebar** or the **Numpad Enter** key.
+    *   Press `Shift + Enter` or `Ctrl + Enter`.
+*   **Check On-Screen Keyboard:** Open your OS virtual keyboard (Accessibility settings) and click the **Enter** key to see if it bypasses a hardware mapping issue.
+*   **Clear Input Buffers:** Press `Esc` a few times to cancel any background pop-ups or frozen UI overlays blocking the screen advance.
 
-        header { text-align: center; padding: 80px 20px 20px 20px; }
-        header h1 { color: var(--text-bright); font-size: 3rem; margin-bottom: 10px; text-shadow: 0 0 20px var(--accent-glow); }
-        header p { font-size: 1.1rem; color: #636d80; }
-
-        main { width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; }
-        .section-title { 
-            color: var(--text-bright); 
-            border-bottom: 2px solid var(--accent-color); 
-            padding-bottom: 8px; 
-            margin-top: 40px; 
-            font-size: 1.4rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-            border-radius: 2px;
-        }
-        
-        .grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-top: 20px; }
-        @media (min-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255, 227, 170, 0.08);
-            border-radius: var(--border-radius-lg);
-            padding: 28px;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .card h3 { margin: 0 0 10px 0; color: var(--text-bright); font-size: 1.3rem; }
-        .card p { margin: 0 0 24px 0; font-size: 0.95rem; color: #737d8f; line-height: 1.6; }
-
-        .btn { display: inline-block; text-align: center; text-decoration: none; padding: 14px 24px; font-size: 0.95rem; font-weight: 700; border-radius: var(--border-radius-full); cursor: pointer; border: none; }
-        .btn-primary { background-color: var(--accent-color); color: #000000; box-shadow: 0 4px 15px var(--accent-glow); }
-
-        /* FOOTER DISCLAIMER */
-        footer {
-            margin-top: auto;
-            padding: 20px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #555d6b;
-            max-width: 600px;
-        }
-
-        /* MODERN MINIMIZABLE MUSIC PLAYER */
-        .modern-player {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: rgba(15, 18, 28, 0.85);
-            border: 1px solid rgba(255, 227, 170, 0.2);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--border-radius-lg);
-            padding: 16px 20px;
-            z-index: 9999;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
-        }
-
-        .player-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .album-art {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--border-radius-sm);
-            background: rgba(255, 227, 170, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .track-details {
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .track-status {
-            font-size: 0.65rem;
-            letter-spacing: 1.5px;
-            color: var(--accent-color);
-            margin: 0;
-            font-weight: 800;
-        }
-
-        .track-title {
-            color: var(--text-bright);
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin: 2px 0 0 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .player-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: 1px solid rgba(255, 227, 170, 0.2);
-            color: var(--accent-color);
-            border-radius: var(--border-radius-full);
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-        }
-
-        .icon-btn:hover {
-            background: var(--accent-color);
-            color: #000;
-        }
-
-        .player-controls {
-            margin-top: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-height: 100px;
-            opacity: 1;
-            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .progress-bar {
-            flex-grow: 1;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--border-radius-full);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--accent-color);
-            border-radius: var(--border-radius-full);
-        }
-
-        .time-text {
-            font-size: 0.7rem;
-            color: var(--text-color);
-            min-width: 30px;
-        }
-
-        .playback-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        .play-btn {
-            width: 40px;
-            height: 40px;
-            background: var(--accent-color);
-            color: #000;
-            border-radius: var(--border-radius-full);
-            font-size: 1rem;
-            border: none;
-        }
-
-        /* MINIMIZED PLAYER STATE */
-        .modern-player.minimized {
-            padding: 10px 16px;
-            max-width: 280px;
-            border-radius: var(--border-radius-full);
-        }
-
-        .modern-player.minimized .player-controls {
-            max-height: 0;
-            opacity: 0;
-            margin-top: 0;
-            pointer-events: none;
-        }
-
-        .modern-player.minimized .album-art {
-            width: 32px;
-            height: 32px;
-            font-size: 0.9rem;
-            border-radius: var(--border-radius-full);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- CLICK TO ENTER OVERLAY -->
-    <div id="enter-overlay">
-        <div class="enter-text">[ click to enter ]</div>
-    </div>
-
-    <!-- SOCIAL LINKS -->
-    <div class="socials-sidebar">
-        <a href="https://youtube.com/@WBJ4YCE" class="social-link" target="_blank" title="YouTube">
-            <i class="fa-brands fa-youtube"></i>
-        </a>
-        <a href="https://horizon.meta.com/profile/622800940922066?hwsh=1208710486115575410512181" class="social-link" target="_blank" title="Meta Horizon">
-            <i class="fa-solid fa-vr-cardboard"></i>
-        </a>
-        <a href="https://tiktok.com/@wbj4yce" class="social-link" target="_blank" title="TikTok">
-            <i class="fa-brands fa-tiktok"></i>
-        </a>
-        <a href="https://gofile.io/d/keCQJbmK" class="social-link" target="_blank" title="GoFile Folder">
-            <i class="fa-solid fa-folder-open"></i>
-        </a>
-    </div>
-
-    <header>
-        <h1>⚡ WBJayce Hub ⚡</h1>
-        <p>One click away from getting banned🙃</p>
-    </header>
-
-    <main>
-        <h2 class="section-title">Meta Tag Downloads</h2>
-        <div class="grid">
-            <!-- DOWNLOAD CARD 1 -->
-            <div class="card">
-                <div>
-                    <h3>Nitro Client (OP)</h3>
-                    <p>Download the latest Nitro Client menu for Meta Tag here.</p>
-                </div>
-                <a href="https://mediafire.com/file_link_1" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-
-            <!-- DOWNLOAD CARD 2 -->
-            <div class="card">
-                <div>
-                    <h3>Joker Client (Mid)</h3>
-                    <p>This Modded Apk of Meta Tag, is Joker client, and Zarth modding hub put together</p>
-                </div>
-                <a href="https://www.mediafire.com/file/mojovalymlipshg/MetaTag_ZarthModdingHub_1.1.43.apk/file" class="btn btn-primary" target="_blank">Download</a>
-            </div>
-
-The current battery percentage shown in the top performance overlay is **60%** (BAT: 60)[cite: 1].
+What specific device, console, or game/program are you running right now?
